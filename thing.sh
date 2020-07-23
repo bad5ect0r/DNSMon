@@ -32,7 +32,7 @@ for target in $(cat $TARGETS); do
     TITLE="Amass Notification ($(echo $target | awk -F '/' '{print $NF}'))"
 
     echo "Running amass for $target..."
-    amass enum -src -active -df $target/DNS/root_domains.txt -config $target/DNS/amass.ini -o $target/DNS/amass_results.txt -dir $target/DNS/amass_dir -brute -w $1 -norecursive
+    amass enum -src -active -df $target/DNS/root_domains.txt -config $target/DNS/amass.ini -o $target/DNS/amass_results.txt -dir $target/DNS/amass_dir -brute -w $1
     RESULT=$(amass track -df $target/DNS/root_domains.txt  -config $target/DNS/amass.ini -last 2 -dir $target/DNS/amass_dir | grep Found | awk '{print $2}')
 
     FINAL_RESULT=$(while read -r d; do if grep --quiet "$d" $target/DNS/all_domains.txt; then continue; else echo "$d"; fi; done <<< $RESULT)
